@@ -12,6 +12,9 @@ import UIKit
 class ViewController: UIViewController
 {
 
+    @IBOutlet weak var startDeck: UIImageView!
+    
+    @IBOutlet weak var endDeck: UIImageView!
     
     @IBOutlet weak var scoreLabel: UILabel!
     
@@ -23,17 +26,13 @@ class ViewController: UIViewController
     {
         super.viewDidLoad()
         
-        //setBtns()
-        
-        
-        updateViewFromModel()
+      updateViewFromModel()
         
     }
     
+    
     func updateViewFromModel()
     {
-        
-        
         for view in self.cardContainerView.subviews {
             view.removeFromSuperview()
         }
@@ -52,11 +51,13 @@ class ViewController: UIViewController
         for view in self.cardContainerView.subviews {
             let gestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(getIndex(_:)))
             view.addGestureRecognizer(gestureRecognizer)
+            view.frame = self.startDeck.frame
         }
         
         scoreLabel.text = "Score: \(game.score)"
         matchLabel.isHidden = true
     }
+    
     @objc func getIndex(_ sender: UITapGestureRecognizer) {
         if let cardNumber = cardContainerView.subviews.firstIndex(of: sender.view!)
             
@@ -90,6 +91,7 @@ class ViewController: UIViewController
                     {
                             view.layer.borderColor = #colorLiteral(red: 0.7450980544, green: 0.1568627506, blue: 0.07450980693, alpha: 1)
                             view.layer.borderWidth = 2
+                    
                     }
                 }
                 
@@ -97,7 +99,7 @@ class ViewController: UIViewController
                 self.matchLabel.text = "Mismatch! -1"
                 self.matchLabel.textColor = #colorLiteral(red: 0.7450980544, green: 0.1568627506, blue: 0.07450980693, alpha: 1)
                 
-                DispatchQueue.main.asyncAfter(deadline: .now() + 1.0, execute: {
+                DispatchQueue.main.asyncAfter(deadline: .now() + 1.5, execute: {
                     self.game.cardsInGame[cardNumber].isMisMatched = false
                     for i in 0..<self.game.cardsInGame.count{
                         self.game.cardsInGame[i].isSelected = false
@@ -125,7 +127,7 @@ class ViewController: UIViewController
                 self.matchLabel.text = "Match! +3"
                 self.matchLabel.textColor = #colorLiteral(red: 0.3411764801, green: 0.6235294342, blue: 0.1686274558, alpha: 1)
                 
-                DispatchQueue.main.asyncAfter(deadline: .now() + 1.3, execute: {
+                DispatchQueue.main.asyncAfter(deadline: .now() + 1.5, execute: {
                     
                     self.game.cardsInGame[cardNumber].isMatched = false
                     var numArray = [Int]()
@@ -142,39 +144,56 @@ class ViewController: UIViewController
                     }
                     
                     for i in numArray{
-                        print(i)
-                        self.game.cardsInGame.remove(at: i)
+                        
+                         //self.game.cardsInGame.remove(at: i)
+                        
+                        let view = self.cardContainerView.subviews[i]
+
+                        UIView.transition(with: view, duration: 0.8, options: .curveEaseInOut, animations: {
+
+                            // animation
+
+                            view.frame = self.endDeck.frame
+
+
+
+                        }) { finished in
+
+                            self.game.cardsInGame.remove(at: i)
+                            
+                            self.updateViewFromModel()
+                            // completion
+                           
+                        }
                     }
-                    for i in 0..<self.game.cardsInGame.count
-                    {
-                        self.game.cardsInGame[i].isSelected = false
-                    }
-                   
+                    
                     self.game.addCards(numberOfCardsToAdd: 3)
-                    self.updateViewFromModel()
+                    
+//                    for i in 0..<self.game.cardsInGame.count
+//                                                {
+//                                                    self.game.cardsInGame[i].isSelected = false
+//                                                }
+//
+//
+//                                                self.game.addCards(numberOfCardsToAdd: 3)
+//                                                self.updateViewFromModel()
+                  
                 })
             }
         }
     }
     
     @IBAction func newGameClicked(_ sender: Any) {
+       
         game.newGame()
         
-        for view in self.cardContainerView.subviews {
-        UIView.transition(with: view, duration: 0.5, options: .curveEaseInOut, animations: {
-            
-            // animation
-            
-            view.transform = CGAffineTransform(rotationAngle: CGFloat.pi)
-            view.transform = CGAffineTransform(translationX: -256, y: -256)
-            
-            }) { finished in
-            self.updateViewFromModel()
-            }
-        }
-        
+        updateViewFromModel()
         
     }
     
+    @IBAction func dealMoreClicked(_ sender: Any) {
+        game.addCards(numberOfCardsToAdd: 3)
+        updateViewFromModel()
+    }
     
 }
