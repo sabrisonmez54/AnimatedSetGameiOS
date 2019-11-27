@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14490.70" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
+    <device id="retina6_1" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14490.49"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <scenes>
+        <!--View Controller-->
+        <scene sceneID="tne-QT-ifu">
+            <objects>
+                <viewController id="BYZ-38-t0r" customClass="ViewController" customModule="animatedSetGame" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Score: 0" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="WD8-5n-8gf">
+                                <rect key="frame" x="255" y="769" width="150" height="37"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="40"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Hig-bm-Rxf" customClass="CardContainerView" customModule="SetGame" customModuleProvider="target">
+                                <rect key="frame" x="20" y="44" width="374" height="639"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            </view>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Match!  +3" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ssk-OW-ulz">
+                                <rect key="frame" x="132" y="377" width="207" height="48"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="40"/>
+                                <color key="textColor" red="0.0" green="0.97680455450000003" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="fV0-6q-sru">
+                                <rect key="frame" x="20" y="712" width="150" height="150"/>
+                                <subviews>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ijF-qu-7K7">
+                                        <rect key="frame" x="0.0" y="0.0" width="150" height="43.5"/>
+                                        <color key="backgroundColor" cocoaTouchSystemColor="viewFlipsideBackgroundColor"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="20"/>
+                                        <state key="normal" title="New Game">
+                                            <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        </state>
+                                        <connections>
+                                            <action selector="newGameClicked:" destination="BYZ-38-t0r" eventType="touchUpInside" id="e6N-CJ-sbX"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="q0G-mo-fLI">
+                                        <rect key="frame" x="0.0" y="53.5" width="150" height="43"/>
+                                        <color key="backgroundColor" red="0.58072251080000004" green="0.066734083" blue="0.0" alpha="0.87631100169999998" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="20"/>
+                                        <state key="normal" title="Deal 3 More">
+                                            <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        </state>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="uHL-9R-jpU">
+                                        <rect key="frame" x="0.0" y="106.5" width="150" height="43.5"/>
+                                        <color key="backgroundColor" red="1" green="0.83234566450000003" blue="0.47320586440000001" alpha="0.77563142119999995" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="20"/>
+                                        <state key="normal" title="Home">
+                                            <color key="titleColor" red="0.1215686277" green="0.1294117719" blue="0.1411764771" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        </state>
+                                    </button>
+                                </subviews>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="150" id="Usk-zW-D2P"/>
+                                    <constraint firstAttribute="height" constant="150" id="gLs-4k-CSD"/>
+                                </constraints>
+                            </stackView>
+                        </subviews>
+                        <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="fV0-6q-sru" firstAttribute="leading" secondItem="Hig-bm-Rxf" secondAttribute="leading" id="5Ge-zf-YzM"/>
+                            <constraint firstItem="ssk-OW-ulz" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="132" id="9GI-tu-9kX"/>
+                            <constraint firstItem="Hig-bm-Rxf" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" id="9ug-qM-eRy"/>
+                            <constraint firstItem="fV0-6q-sru" firstAttribute="bottom" secondItem="6Tk-OE-BBY" secondAttribute="bottom" id="NhM-yb-Yrh"/>
+                            <constraint firstItem="fV0-6q-sru" firstAttribute="centerY" secondItem="WD8-5n-8gf" secondAttribute="centerY" id="WDW-X5-Yeo"/>
+                            <constraint firstItem="WD8-5n-8gf" firstAttribute="leading" secondItem="fV0-6q-sru" secondAttribute="trailing" constant="85" id="YTm-9k-yyq"/>
+                            <constraint firstItem="fV0-6q-sru" firstAttribute="top" secondItem="Hig-bm-Rxf" secondAttribute="bottom" constant="29" id="epk-XC-Xnv"/>
+                            <constraint firstItem="ssk-OW-ulz" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="333" id="quB-4O-T7e"/>
+                            <constraint firstItem="fV0-6q-sru" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" id="sxY-TN-tU2"/>
+                            <constraint firstItem="Hig-bm-Rxf" firstAttribute="trailing" secondItem="8bC-Xf-vdC" secondAttribute="trailingMargin" id="ufT-Xa-REQ"/>
+                            <constraint firstItem="Hig-bm-Rxf" firstAttribute="centerX" secondItem="ssk-OW-ulz" secondAttribute="centerX" constant="-28.5" id="uj3-dy-V2N"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
+                    </view>
+                    <connections>
+                        <outlet property="cardContainerView" destination="Hig-bm-Rxf" id="wy3-P0-alF"/>
+                        <outlet property="matchLabel" destination="ssk-OW-ulz" id="4vU-Ph-VgW"/>
+                        <outlet property="scoreLabel" destination="WD8-5n-8gf" id="MCa-ai-ie7"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="137.68115942028987" y="115.84821428571428"/>
+        </scene>
+    </scenes>
+</document>
