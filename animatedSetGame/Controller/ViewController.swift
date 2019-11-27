@@ -21,6 +21,7 @@ class ViewController: UIViewController
     @IBOutlet weak var matchLabel: UILabel!
     @IBOutlet weak var cardContainerView: CardContainerView!
      var game = Set()
+    private var hintedCard = [Card]()
     
     override func viewDidLoad()
     {
@@ -91,6 +92,14 @@ class ViewController: UIViewController
                     {
                             view.layer.borderColor = #colorLiteral(red: 0.7450980544, green: 0.1568627506, blue: 0.07450980693, alpha: 1)
                             view.layer.borderWidth = 2
+                        
+                        let animation = CABasicAnimation(keyPath: "position")
+                        animation.duration = 0.07
+                        animation.repeatCount = 4
+                        animation.autoreverses = true
+                        animation.fromValue = NSValue(cgPoint: CGPoint(x: view.center.x - 10, y: view.center.y))
+                        animation.toValue = NSValue(cgPoint: CGPoint(x: view.center.x + 10, y: view.center.y))
+                        view.layer.add(animation, forKey: "position")
                     
                     }
                 }
@@ -149,7 +158,7 @@ class ViewController: UIViewController
                         
                         let view = self.cardContainerView.subviews[i]
 
-                        UIView.transition(with: view, duration: 0.8, options: .curveEaseInOut, animations: {
+                        UIView.transition(with: view, duration: 0.33, options: .curveEaseInOut, animations: {
 
                             // animation
 
@@ -168,16 +177,7 @@ class ViewController: UIViewController
                     }
                     
                     self.game.addCards(numberOfCardsToAdd: 3)
-                    
-//                    for i in 0..<self.game.cardsInGame.count
-//                                                {
-//                                                    self.game.cardsInGame[i].isSelected = false
-//                                                }
-//
-//
-//                                                self.game.addCards(numberOfCardsToAdd: 3)
-//                                                self.updateViewFromModel()
-                  
+                
                 })
             }
         }
@@ -196,4 +196,35 @@ class ViewController: UIViewController
         updateViewFromModel()
     }
     
+    @IBAction func hintClicked(_ sender: Any) {
+        
+        game.hint()
+        if game.hintCard.count < 3 { return }
+        
+        for index in 0...2 {
+        
+            hintedCard.append(game.cardsInGame[game.hintCard[index]])
+            print(game.hintCard[index])
+            
+            
+            let view = cardContainerView.subviews[game.hintCard[index]]
+                
+            UIView.animate(withDuration: 0.6,
+                           animations: {
+                            view.transform = CGAffineTransform(scaleX: 0.6, y: 0.6)
+            },
+                           completion: { _ in
+                            UIView.animate(withDuration: 0.6) {
+                               view.transform = CGAffineTransform.identity
+                            }
+            })
+            
+            
+            
+           //print(hintedCard[index].description)
+            //game.cardsInGame[game.hintCard[index]].setNeedsDisplay()
+        }
+        hintedCard.removeAll()
+        
+    }
 }

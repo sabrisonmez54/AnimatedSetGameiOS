@@ -22,7 +22,7 @@ struct Card
     internal var isSelected = false
     
     var description: String {
-        return "\(color)\(shade),\(shape)"
+        return "\(color), \(shade), \(shape), \(number)"
     }
     
     enum Numbers

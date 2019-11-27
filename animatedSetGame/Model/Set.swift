@@ -12,6 +12,7 @@ struct Set
 {
     var cards = [Card]()
     var cardsInGame = [Card]()
+    var hintCard = [Int]()
     
     private(set) var selectedTrio = [Card]()
     var score = 0
@@ -44,6 +45,19 @@ struct Set
         }
     }
     
+    mutating func hint() {
+        hintCard.removeAll()
+        for i in 0..<cardsInGame.count {
+            for j in (i + 1)..<cardsInGame.count {
+                for k in (j + 1)..<cardsInGame.count {
+                    let hints = [cardsInGame[i], cardsInGame[j], cardsInGame[k]]
+                    if checkMatch(hints) {
+                        hintCard += [i, j, k]
+                    }
+                }
+            }
+        }
+    }
     
     private mutating func addCard()
     {

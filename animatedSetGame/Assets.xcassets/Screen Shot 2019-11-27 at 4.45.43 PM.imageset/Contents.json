@@ -2,12 +2,11 @@
   "images" : [
     {
       "idiom" : "universal",
-      "filename" : "cardback.png",
+      "filename" : "Screen Shot 2019-11-27 at 4.45.43 PM.png",
       "scale" : "1x"
     },
     {
       "idiom" : "universal",
-      "filename" : "cardback@2x.jpg",
       "scale" : "2x"
     },
     {
