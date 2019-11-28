@@ -16,13 +16,13 @@ struct Card
     internal var shape : Shapes
     internal var number : Numbers
     
-    
+    internal var isFaceUp = false
     internal var isMatched = false
     internal var isMisMatched = false
     internal var isSelected = false
     
     var description: String {
-        return "\(color), \(shade), \(shape), \(number)"
+        return "\(color), \(shade), \(shape), \(number) , is face up: \(isFaceUp)"
     }
     
     enum Numbers

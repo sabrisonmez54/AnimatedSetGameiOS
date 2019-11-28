@@ -46,7 +46,9 @@ class ViewController: UIViewController
             subView.isMatched = game.cardsInGame[index].isMatched
             subView.isSelected = game.cardsInGame[index].isSelected
             subView.isMisMatched = game.cardsInGame[index].isMisMatched
-            
+            //subView.isFaceUp =  game.cardsInGame[index].isFaceUp
+            subView.isFaceUp =  true
+            cardContainerView.isAnimated = true
             cardContainerView.addSubview(subView)
         }
         for view in self.cardContainerView.subviews {
@@ -59,16 +61,79 @@ class ViewController: UIViewController
         matchLabel.isHidden = true
     }
     
-    @objc func getIndex(_ sender: UITapGestureRecognizer) {
+    func updateViewFromModel_DealMore()
+    {
+        for index in (game.cardsInGame.count - 3)...game.cardsInGame.count - 1
+        {
+            let subView = SetCardView()
+            subView.color = game.cardsInGame[index].color
+            subView.count = game.cardsInGame[index].number
+            subView.shade = game.cardsInGame[index].shade
+            subView.shape = game.cardsInGame[index].shape
+            subView.isMatched = game.cardsInGame[index].isMatched
+            subView.isSelected = game.cardsInGame[index].isSelected
+            subView.isMisMatched = game.cardsInGame[index].isMisMatched
+            //subView.isFaceUp =  game.cardsInGame[index].isFaceUp
+            subView.isFaceUp =  true
+            
+            cardContainerView.addSubview(subView)
+            cardContainerView.isAnimated = true
+             subView.frame = self.startDeck.frame
+        }
+        for view in self.cardContainerView.subviews {
+            let gestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(getIndex(_:)))
+            view.addGestureRecognizer(gestureRecognizer)
+           
+        }
+        
+        scoreLabel.text = "Score: \(game.score)"
+        matchLabel.isHidden = true
+    }
+    
+    func updateViewFromModel_Match()
+    {
+        for view in self.cardContainerView.subviews {
+            view.removeFromSuperview()
+        }
+        
+        for index in game.cardsInGame.indices
+        {
+            let subView = SetCardView()
+            subView.color = game.cardsInGame[index].color
+            subView.count = game.cardsInGame[index].number
+            subView.shade = game.cardsInGame[index].shade
+            subView.shape = game.cardsInGame[index].shape
+            subView.isMatched = game.cardsInGame[index].isMatched
+            subView.isSelected = game.cardsInGame[index].isSelected
+            subView.isMisMatched = game.cardsInGame[index].isMisMatched
+            //subView.isFaceUp =  game.cardsInGame[index].isFaceUp
+            subView.isFaceUp =  true
+            
+            cardContainerView.isAnimated = false
+            cardContainerView.addSubview(subView)
+            //subView.frame = self.startDeck.frame
+        }
+        for view in self.cardContainerView.subviews {
+            let gestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(getIndex(_:)))
+            view.addGestureRecognizer(gestureRecognizer)
+        }
+        
+        scoreLabel.text = "Score: \(game.score)"
+        matchLabel.isHidden = true
+    }
+    
+    @objc func getIndex(_ sender: UITapGestureRecognizer)
+    {
         if let cardNumber = cardContainerView.subviews.firstIndex(of: sender.view!)
             
         {
             game.chooseCard(at: cardNumber)
             let view = cardContainerView.subviews[cardNumber]
             
-            UIView.transition(with: view, duration: 0.325, options: .transitionFlipFromLeft, animations: {
+            UIView.transition(with: view, duration: 0.6, options: .transitionFlipFromLeft, animations: {
                 
                 // animation
+                //self.game.cardsInGame[cardNumber].isFaceUp = !self.game.cardsInGame[cardNumber].isFaceUp
                 
                 view.transform = CGAffineTransform(scaleX: 2, y: 2)
                 
@@ -100,7 +165,6 @@ class ViewController: UIViewController
                         animation.fromValue = NSValue(cgPoint: CGPoint(x: view.center.x - 10, y: view.center.y))
                         animation.toValue = NSValue(cgPoint: CGPoint(x: view.center.x + 10, y: view.center.y))
                         view.layer.add(animation, forKey: "position")
-                    
                     }
                 }
                 
@@ -113,7 +177,7 @@ class ViewController: UIViewController
                     for i in 0..<self.game.cardsInGame.count{
                         self.game.cardsInGame[i].isSelected = false
                     }
-                    self.updateViewFromModel()
+                    self.updateViewFromModel_Match()
                 })
             }
             
@@ -136,7 +200,7 @@ class ViewController: UIViewController
                 self.matchLabel.text = "Match! +3"
                 self.matchLabel.textColor = #colorLiteral(red: 0.3411764801, green: 0.6235294342, blue: 0.1686274558, alpha: 1)
                 
-                DispatchQueue.main.asyncAfter(deadline: .now() + 1.5, execute: {
+                DispatchQueue.main.asyncAfter(deadline: .now() + 1.6, execute: {
                     
                     self.game.cardsInGame[cardNumber].isMatched = false
                     var numArray = [Int]()
@@ -145,38 +209,32 @@ class ViewController: UIViewController
                         if view.layer.borderColor == #colorLiteral(red: 0.3411764801, green: 0.6235294342, blue: 0.1686274558, alpha: 1), view.layer.borderWidth == 2
                         {
                             //print(self.cardContainerView.subviews.firstIndex(of: view)!)
-                           
                             numArray.append(self.cardContainerView.subviews.firstIndex(of: view)!)
                             numArray = numArray.sorted().reversed()
                             
                         }
                     }
                     
-                    for i in numArray{
-                        
-                         //self.game.cardsInGame.remove(at: i)
+                    for i in numArray
+                    {
                         
                         let view = self.cardContainerView.subviews[i]
 
-                        UIView.transition(with: view, duration: 0.33, options: .curveEaseInOut, animations: {
+                        UIView.transition(with: view, duration: 0.33, options: .transitionFlipFromLeft, animations: {
 
                             // animation
-
+                            self.game.cardsInGame[i].isFaceUp = !self.game.cardsInGame[i].isFaceUp
                             view.frame = self.endDeck.frame
-
-
-
+                            
                         }) { finished in
 
                             self.game.cardsInGame.remove(at: i)
-                            
-                            self.updateViewFromModel()
-                            // completion
-                           
+                            view.removeFromSuperview()
                         }
                     }
-                    
+                   
                     self.game.addCards(numberOfCardsToAdd: 3)
+                     self.updateViewFromModel_DealMore()
                 
                 })
             }
@@ -191,14 +249,16 @@ class ViewController: UIViewController
         
     }
     
-    @IBAction func dealMoreClicked(_ sender: Any) {
+    @IBAction func dealMoreClicked(_ sender: Any)
+    {
         game.addCards(numberOfCardsToAdd: 3)
-        updateViewFromModel()
+        updateViewFromModel_DealMore()
     }
     
     @IBAction func hintClicked(_ sender: Any) {
         
         game.hint()
+        cardContainerView.isAnimated = true
         if game.hintCard.count < 3 { return }
         
         for index in 0...2 {
@@ -218,11 +278,6 @@ class ViewController: UIViewController
                                view.transform = CGAffineTransform.identity
                             }
             })
-            
-            
-            
-           //print(hintedCard[index].description)
-            //game.cardsInGame[game.hintCard[index]].setNeedsDisplay()
         }
         hintedCard.removeAll()
         

@@ -36,7 +36,7 @@ struct Set
             for shape in Card.Shapes.all{
                 for number in Card.Numbers.all{
                     for shade in Card.Shades.all {
-                        let playingCard = Card(color: color, shade: shade, shape: shape, number: number, isMatched: false, isMisMatched: false, isSelected: false)
+                        let playingCard = Card(color: color, shade: shade, shape: shape, number: number, isFaceUp: false, isMatched: false, isMisMatched: false, isSelected: false)
                         cards.append(playingCard)
                         cards.shuffle()
                     }

@@ -79,6 +79,13 @@ import UIKit
             setNeedsLayout()
         }
     }
+    @IBInspectable var isFaceUp: Bool = true  {
+        didSet {
+            setNeedsDisplay()
+            setNeedsLayout()
+        }
+    }
+    
 
     /***********************************************************/
     /*                                                         */
@@ -111,10 +118,14 @@ import UIKit
         //ellipse.addLine(to: lowerRightVertex)
         ellipse.addLine(to: upperLeftVertex)
         
-        ellipse.addArc(withCenter: CGPoint(x: self.bounds.size.width * 0.5,y: self.bounds.size.height * 0.3), radius: 15, startAngle: .pi, endAngle: 0, clockwise: true)
+        let xDistance = (upperRightVertex.x - upperLeftVertex.x)
+        let yDistance = (upperRightVertex.y - upperLeftVertex.y)
+        let distance = sqrt((xDistance * xDistance) + (yDistance * yDistance))
+    
+        ellipse.addArc(withCenter: CGPoint(x: self.bounds.size.width * 0.5,y: self.bounds.size.height * 0.3), radius: distance/2, startAngle: .pi, endAngle: 0, clockwise: true)
         
         ellipse.addLine(to: lowerRightVertex)
-        ellipse.addArc(withCenter: CGPoint(x: self.bounds.size.width * 0.5,y: self.bounds.size.height / 1.5), radius: 15, startAngle: 0, endAngle: .pi, clockwise: true)
+        ellipse.addArc(withCenter: CGPoint(x: self.bounds.size.width * 0.5,y: self.bounds.size.height / 1.5), radius: distance/2, startAngle: 0, endAngle: .pi, clockwise: true)
         
         ellipse.close()
         
@@ -276,15 +287,26 @@ import UIKit
         roundedRect.stroke()
         
         let path = UIBezierPath()
-        if(shape == .diamond){
-            path.append(drawDiamond())
+        if !isFaceUp {
+            if let cardBackImage = UIImage(named: "cardback",
+                                           in: Bundle(for: self.classForCoder),
+                                           compatibleWith: traitCollection) {
+                cardBackImage.draw(in: bounds)
+                
+            }
         }
-        if(shape == .ellipse){
-           path.append(drawEllipse())
+        if isFaceUp {
+            if(shape == .diamond){
+                path.append(drawDiamond())
+            }
+            if(shape == .ellipse){
+                path.append(drawEllipse())
+            }
+            if(shape == .squiggle){
+                path.append(drawSquigle())
+            }
         }
-        if(shape == .squiggle){
-            path.append(drawSquigle())
-        }
+     
         showPath(path)
     }
 }
