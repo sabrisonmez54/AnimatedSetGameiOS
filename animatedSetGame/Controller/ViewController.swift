@@ -27,10 +27,13 @@ class ViewController: UIViewController
     {
         super.viewDidLoad()
         
-      updateViewFromModel()
+        let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(imageTapped(tapGestureRecognizer:)))
+           startDeck.isUserInteractionEnabled = true
+           startDeck.addGestureRecognizer(tapGestureRecognizer)
+        
+        updateViewFromModel()
         
     }
-    
     
     func updateViewFromModel()
     {
@@ -225,7 +228,7 @@ class ViewController: UIViewController
                             // animation
                             self.game.cardsInGame[i].isFaceUp = !self.game.cardsInGame[i].isFaceUp
                             view.frame = self.endDeck.frame
-                            
+//
                         }) { finished in
 
                             self.game.cardsInGame.remove(at: i)
@@ -241,19 +244,31 @@ class ViewController: UIViewController
         }
     }
     
-    @IBAction func newGameClicked(_ sender: Any) {
-       
+    @IBAction func newGameClicked(_ sender: Any)
+    {
         game.newGame()
-        
         updateViewFromModel()
-        
     }
     
     @IBAction func dealMoreClicked(_ sender: Any)
     {
-        game.addCards(numberOfCardsToAdd: 3)
-        updateViewFromModel_DealMore()
+        if game.cards.count > 1
+        {
+            game.addCards(numberOfCardsToAdd: 3)
+                  updateViewFromModel_DealMore()
+        }
+      
     }
+    
+    @objc func imageTapped(tapGestureRecognizer: UITapGestureRecognizer)
+      {
+          cardContainerView.isAnimated = true
+           if game.cards.count > 1
+                 {
+                     game.addCards(numberOfCardsToAdd: 3)
+                           updateViewFromModel_DealMore()
+                 }
+      }
     
     @IBAction func hintClicked(_ sender: Any) {
         
