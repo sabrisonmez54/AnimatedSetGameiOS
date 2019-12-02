@@ -92,7 +92,7 @@ struct Set
                 
                 score = score + 3
                 
-                print("MATCH")
+              //  print("MATCH")
                 
             }
             
@@ -104,13 +104,13 @@ struct Set
                     
                 selectedTrio.removeAll()
                 
-                print("mismatch")
+              //  print("mismatch")
             }
                 
             else
             {
                 cardsInGame[index].isSelected = true
-                print("selected less than 3")
+               // print("selected less than 3")
             }
         }
     }

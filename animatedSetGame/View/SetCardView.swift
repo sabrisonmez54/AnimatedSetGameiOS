@@ -79,7 +79,8 @@ import UIKit
             setNeedsLayout()
         }
     }
-    @IBInspectable var isFaceUp: Bool = true  {
+    @IBInspectable var isFaceUp: Bool = true
+        {
         didSet {
             setNeedsDisplay()
             setNeedsLayout()

@@ -144,7 +144,7 @@ class ViewController: UIViewController
                     if game.selectedTrio.indices.contains(card){
                         if game.cardsInGame[cardNumber].description == game.selectedTrio[card].description
                         {
-                            print(card)
+                            //print(card)
                             game.selectedTrio.remove(at: card)
                             
                         }
@@ -319,17 +319,16 @@ class ViewController: UIViewController
         for index in 0...2 {
         
             hintedCard.append(game.cardsInGame[game.hintCard[index]])
-            print(game.hintCard[index])
-            
+           // print(game.hintCard[index])
             
             let view = cardContainerView.subviews[game.hintCard[index]]
                 
-            UIView.animate(withDuration: 0.6,
+            UIView.animate(withDuration: 0.7,
                            animations: {
-                            view.transform = CGAffineTransform(scaleX: 0.6, y: 0.6)
+                            view.transform = CGAffineTransform(scaleX: 0.7, y: 0.7)
             },
                            completion: { _ in
-                            UIView.animate(withDuration: 0.6) {
+                            UIView.animate(withDuration: 0.7) {
                                view.transform = CGAffineTransform.identity
                             }
             })
