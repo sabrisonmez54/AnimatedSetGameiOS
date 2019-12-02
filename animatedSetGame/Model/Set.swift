@@ -14,7 +14,7 @@ struct Set
     var cardsInGame = [Card]()
     var hintCard = [Int]()
     
-    private(set) var selectedTrio = [Card]()
+    var selectedTrio = [Card]()
     var score = 0
     
     init()
@@ -26,7 +26,8 @@ struct Set
         score = 0
         cards.removeAll()
         cardsInGame.removeAll()
-        cards.removeAll()
+        selectedTrio.removeAll()
+        hintCard.removeAll()
         generateCards()
         addCards(numberOfCardsToAdd: 12)
     }

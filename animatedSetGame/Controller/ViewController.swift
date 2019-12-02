@@ -32,7 +32,6 @@ class ViewController: UIViewController
            startDeck.addGestureRecognizer(tapGestureRecognizer)
         
         updateViewFromModel()
-        
     }
     
     func updateViewFromModel()
@@ -127,120 +126,161 @@ class ViewController: UIViewController
     
     @objc func getIndex(_ sender: UITapGestureRecognizer)
     {
+        
         if let cardNumber = cardContainerView.subviews.firstIndex(of: sender.view!)
             
         {
-            game.chooseCard(at: cardNumber)
             let view = cardContainerView.subviews[cardNumber]
             
-            UIView.transition(with: view, duration: 0.6, options: .transitionFlipFromLeft, animations: {
-                
-                // animation
-                //self.game.cardsInGame[cardNumber].isFaceUp = !self.game.cardsInGame[cardNumber].isFaceUp
-                
-                view.transform = CGAffineTransform(scaleX: 2, y: 2)
-                
-                view.layer.borderColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1)
-                view.layer.borderWidth = 2
-                
-                
-            }) { finished in
-                
-                // completion
-                
-            }
+            //game.chooseCard(at: cardNumber)
             
-            if(game.cardsInGame[cardNumber].isMisMatched){
+            if game.cardsInGame[cardNumber].isSelected
+            {
+                game.cardsInGame[cardNumber].isSelected = !game.cardsInGame[cardNumber].isSelected
                 
-                view.layer.borderColor = #colorLiteral(red: 0.7450980544, green: 0.1568627506, blue: 0.07450980693, alpha: 1)
-                view.layer.borderWidth = 2
+                for card in game.selectedTrio.indices
+                {
+                   // var cardIndex = game.selectedTrio.index(card, offsetBy: 0)
+                    if game.selectedTrio.indices.contains(card){
+                        if game.cardsInGame[cardNumber].description == game.selectedTrio[card].description
+                        {
+                            print(card)
+                            game.selectedTrio.remove(at: card)
+                            
+                        }
+                    }
+                }
                 
-                for view in cardContainerView.subviews {
-                    if view.layer.borderColor == #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1), view.layer.borderWidth == 2
-                    {
+                
+                UIView.transition(with: view, duration: 0.6, options: .transitionCrossDissolve, animations: {
+                    
+                    // animation
+                    //self.game.cardsInGame[cardNumber].isFaceUp = !self.game.cardsInGame[cardNumber].isFaceUp
+                    
+                    view.transform = CGAffineTransform(scaleX: 3, y: 3)
+                    
+                    view.layer.borderColor = #colorLiteral(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
+                   // view.layer.borderWidth = 2
+                    
+                    
+                }) { finished in
+                    // completion
+                }
+            }
+            else{
+                game.chooseCard(at: cardNumber)
+                
+                UIView.transition(with: view, duration: 0.6, options: .transitionFlipFromLeft, animations: {
+                    
+                    // animation
+                    //self.game.cardsInGame[cardNumber].isFaceUp = !self.game.cardsInGame[cardNumber].isFaceUp
+                    
+                    view.transform = CGAffineTransform(scaleX: 2, y: 2)
+                    
+                    view.layer.borderColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1)
+                    view.layer.borderWidth = 2
+                    
+                    
+                }) { finished in
+                    
+                    // completion
+                    
+                }
+                
+                if(game.cardsInGame[cardNumber].isMisMatched){
+                    
+                    view.layer.borderColor = #colorLiteral(red: 0.7450980544, green: 0.1568627506, blue: 0.07450980693, alpha: 1)
+                    view.layer.borderWidth = 2
+                    
+                    for view in cardContainerView.subviews {
+                        if view.layer.borderColor == #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1), view.layer.borderWidth == 2
+                        {
                             view.layer.borderColor = #colorLiteral(red: 0.7450980544, green: 0.1568627506, blue: 0.07450980693, alpha: 1)
                             view.layer.borderWidth = 2
-                        
-                        let animation = CABasicAnimation(keyPath: "position")
-                        animation.duration = 0.07
-                        animation.repeatCount = 4
-                        animation.autoreverses = true
-                        animation.fromValue = NSValue(cgPoint: CGPoint(x: view.center.x - 10, y: view.center.y))
-                        animation.toValue = NSValue(cgPoint: CGPoint(x: view.center.x + 10, y: view.center.y))
-                        view.layer.add(animation, forKey: "position")
+                            
+                            let animation = CABasicAnimation(keyPath: "position")
+                            animation.duration = 0.07
+                            animation.repeatCount = 4
+                            animation.autoreverses = true
+                            animation.fromValue = NSValue(cgPoint: CGPoint(x: view.center.x - 10, y: view.center.y))
+                            animation.toValue = NSValue(cgPoint: CGPoint(x: view.center.x + 10, y: view.center.y))
+                            view.layer.add(animation, forKey: "position")
+                        }
                     }
+                    
+                    self.matchLabel.isHidden = false
+                    self.matchLabel.text = "Mismatch! -1"
+                    self.matchLabel.textColor = #colorLiteral(red: 0.7450980544, green: 0.1568627506, blue: 0.07450980693, alpha: 1)
+                    
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 1.5, execute: {
+                        self.game.cardsInGame[cardNumber].isMisMatched = false
+                        for i in 0..<self.game.cardsInGame.count{
+                            self.game.cardsInGame[i].isSelected = false
+                        }
+                        self.updateViewFromModel_Match()
+                    })
                 }
                 
-                self.matchLabel.isHidden = false
-                self.matchLabel.text = "Mismatch! -1"
-                self.matchLabel.textColor = #colorLiteral(red: 0.7450980544, green: 0.1568627506, blue: 0.07450980693, alpha: 1)
-                
-                DispatchQueue.main.asyncAfter(deadline: .now() + 1.5, execute: {
-                    self.game.cardsInGame[cardNumber].isMisMatched = false
-                    for i in 0..<self.game.cardsInGame.count{
-                        self.game.cardsInGame[i].isSelected = false
-                    }
-                    self.updateViewFromModel_Match()
-                })
-            }
-            
-            if(game.cardsInGame[cardNumber].isMatched)
-            {
-                view.layer.borderColor = #colorLiteral(red: 0.3411764801, green: 0.6235294342, blue: 0.1686274558, alpha: 1)
-                view.layer.borderWidth = 2
-                
-                for view in cardContainerView.subviews {
-                    if view.layer.borderColor == #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1), view.layer.borderWidth == 2
-                    {
-                        view.layer.borderColor = #colorLiteral(red: 0.3411764801, green: 0.6235294342, blue: 0.1686274558, alpha: 1)
-                        view.layer.borderWidth = 2
-                        
-                        
-                    }
-                }
-                
-                self.matchLabel.isHidden = false
-                self.matchLabel.text = "Match! +3"
-                self.matchLabel.textColor = #colorLiteral(red: 0.3411764801, green: 0.6235294342, blue: 0.1686274558, alpha: 1)
-                
-                DispatchQueue.main.asyncAfter(deadline: .now() + 1.6, execute: {
+                if(game.cardsInGame[cardNumber].isMatched)
+                {
+                    view.layer.borderColor = #colorLiteral(red: 0.3411764801, green: 0.6235294342, blue: 0.1686274558, alpha: 1)
+                    view.layer.borderWidth = 2
                     
-                    self.game.cardsInGame[cardNumber].isMatched = false
-                    var numArray = [Int]()
-                    
-                    for view in self.cardContainerView.subviews {
-                        if view.layer.borderColor == #colorLiteral(red: 0.3411764801, green: 0.6235294342, blue: 0.1686274558, alpha: 1), view.layer.borderWidth == 2
+                    for view in cardContainerView.subviews {
+                        if view.layer.borderColor == #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1), view.layer.borderWidth == 2
                         {
-                            //print(self.cardContainerView.subviews.firstIndex(of: view)!)
-                            numArray.append(self.cardContainerView.subviews.firstIndex(of: view)!)
-                            numArray = numArray.sorted().reversed()
+                            view.layer.borderColor = #colorLiteral(red: 0.3411764801, green: 0.6235294342, blue: 0.1686274558, alpha: 1)
+                            view.layer.borderWidth = 2
+                            
                             
                         }
                     }
                     
-                    for i in numArray
-                    {
+                    self.matchLabel.isHidden = false
+                    self.matchLabel.text = "Match! +3"
+                    self.matchLabel.textColor = #colorLiteral(red: 0.3411764801, green: 0.6235294342, blue: 0.1686274558, alpha: 1)
+                    
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 1.6, execute: {
                         
-                        let view = self.cardContainerView.subviews[i]
-
-                        UIView.transition(with: view, duration: 0.33, options: .transitionFlipFromLeft, animations: {
-
-                            // animation
-                            self.game.cardsInGame[i].isFaceUp = !self.game.cardsInGame[i].isFaceUp
-                            view.frame = self.endDeck.frame
-//
-                        }) { finished in
-
-                            self.game.cardsInGame.remove(at: i)
-                            view.removeFromSuperview()
+                        self.game.cardsInGame[cardNumber].isMatched = false
+                        var numArray = [Int]()
+                        
+                        for view in self.cardContainerView.subviews {
+                            if view.layer.borderColor == #colorLiteral(red: 0.3411764801, green: 0.6235294342, blue: 0.1686274558, alpha: 1), view.layer.borderWidth == 2
+                            {
+                                //print(self.cardContainerView.subviews.firstIndex(of: view)!)
+                                numArray.append(self.cardContainerView.subviews.firstIndex(of: view)!)
+                                numArray = numArray.sorted().reversed()
+                                
+                            }
                         }
-                    }
-                   
-                    self.game.addCards(numberOfCardsToAdd: 3)
-                     self.updateViewFromModel_DealMore()
-                
-                })
+                        
+                        for i in numArray
+                        {
+                            
+                            let view = self.cardContainerView.subviews[i]
+                            
+                            UIView.transition(with: view, duration: 0.33, options: .transitionFlipFromLeft, animations: {
+                                
+                                // animation
+                                self.game.cardsInGame[i].isFaceUp = !self.game.cardsInGame[i].isFaceUp
+                                view.frame = self.endDeck.frame
+                                //
+                            }) { finished in
+                                
+                                self.game.cardsInGame.remove(at: i)
+                                view.removeFromSuperview()
+                            }
+                        }
+                        
+                        self.game.addCards(numberOfCardsToAdd: 3)
+                        self.updateViewFromModel_DealMore()
+                        
+                    })
+                }
             }
+            
+           
         }
     }
     
