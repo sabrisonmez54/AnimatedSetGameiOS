@@ -9,4 +9,4 @@ The game of SET was invented by population geneticist Marsha Jean Falco in 1974.
 
 I have implemented this game using Swift and Xcode:
 
-![photo](https://github.com/sabrisonmez54/AnimatedSetGameiOS/blob/master/AnimatedSet_GIF.gif)
+![photo](https://github.com/sabrisonmez54/AnimatedSetGameiOS/blob/master/AnimatedSetGame1_GIF.gif)
